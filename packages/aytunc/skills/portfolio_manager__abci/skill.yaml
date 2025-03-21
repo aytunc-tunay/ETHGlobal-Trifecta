@@ -1,0 +1,144 @@
+name: portfolio_manager__abci
+author: aytunc
+version: 0.1.0
+type: skill
+description: The scaffold skill is a scaffold for your own skill implementation.
+license: Apache-2.0
+aea_version: '>=1.0.0, <2.0.0'
+fingerprint:
+  __init__.py: bafybeiclhaa7mzkjkkwlqnbv6ojaclvxljwbzgk7pxbqfjqfvh42snoevi
+  behaviours.py: bafybeieky5nciocmudmmmdgdepqexvxyblruu3s4p4qewkoxl2qnaq2b7y
+  dialogues.py: bafybeia4fawttsphlp5olwv75lnis7c6dvf6ncuxgecnero6jbf5ihzybe
+  fsm_specification.yaml: bafybeifcymmzrcubmlofp7y53e5vnrutjuxglig2vmtqoddhova35jd2oq
+  handlers.py: bafybeiaryz37oukqbplz3ku7q5yezpkbyalc5y6a7ngqmm4moteq5d2eei
+  models.py: bafybeihruk2dxse2iwu25aqwqvsicauifx3m4t7r2w7gyj23rrtb2tn3b4
+  payloads.py: bafybeigkhfcq6nqxw74ipyff7gdssnptl2qbvsywohwb6hupjgdiie22qy
+  rounds.py: bafybeifcs6plpev27m535kex6qdi7edmsogdowybk2rk5k6d2lnt5wt7ni
+  tests/__init__.py: bafybeiahrgo3y42b6bxjb3bl3eivsyus2yzu7xa3mleqrldswrg6c6qnpe
+  tests/test_behaviours.py: bafybeiehourx2zadpndpkpheecylmjorg7rk3mk3a6mgbxqbih4ybl2bai
+  tests/test_dialogues.py: bafybeiavgqfqhvzdpoby6oekrzj5c52ji3padcgpfllfibunauvyz3nzfi
+  tests/test_handlers.py: bafybeihodxe56u3ofwmok444im3afctzukemsqyao36k5zsz7txryae4bm
+  tests/test_models.py: bafybeicdp3h2nv6eo3yc26svrpcfcj4wihvamwwixnltkeexq73ga444w4
+  tests/test_payloads.py: bafybeicbwwtmw55uizjm4hluxprnt73npgpjixoqmmufjrgshizlapxivq
+  tests/test_rounds.py: bafybeia2577rn5vfipymvzdot6fjo5r4loqabfyma3gphyyfoa3usmykam
+fingerprint_ignore_patterns: []
+connections: []
+contracts: []
+protocols: []
+skills:
+- valory/abstract_round_abci:0.1.0
+behaviours:
+  main:
+    args: {}
+    class_name: PortfolioManagerRoundBehaviour
+handlers:
+  abci:
+    args: {}
+    class_name: ABCIHandler
+  contract_api:
+    args: {}
+    class_name: ContractApiHandler
+  http:
+    args: {}
+    class_name: HttpHandler
+  ipfs:
+    args: {}
+    class_name: IpfsHandler
+  ledger_api:
+    args: {}
+    class_name: LedgerApiHandler
+  signing:
+    args: {}
+    class_name: SigningHandler
+  tendermint:
+    args: {}
+    class_name: TendermintHandler
+models:
+  abci_dialogues:
+    args: {}
+    class_name: AbciDialogues
+  benchmark_tool:
+    args:
+      log_dir: /logs
+    class_name: BenchmarkTool
+  contract_api_dialogues:
+    args: {}
+    class_name: ContractApiDialogues
+  http_dialogues:
+    args: {}
+    class_name: HttpDialogues
+  ipfs_dialogues:
+    args: {}
+    class_name: IpfsDialogues
+  ledger_api_dialogues:
+    args: {}
+    class_name: LedgerApiDialogues
+  params:
+    args:
+      cleanup_history_depth: 1
+      cleanup_history_depth_current: null
+      drand_public_key: 868f005eb8e6e4ca0a47c8a77ceaa5309a47978a7c71bc5cce96366b5d7a569937c529eeda66c7293784a9402801af31
+      finalize_timeout: 60.0
+      genesis_config:
+        chain_id: chain-c4daS1
+        consensus_params:
+          block:
+            max_bytes: '22020096'
+            max_gas: '-1'
+            time_iota_ms: '1000'
+          evidence:
+            max_age_duration: '172800000000000'
+            max_age_num_blocks: '100000'
+            max_bytes: '1048576'
+          validator:
+            pub_key_types:
+            - ed25519
+          version: {}
+        genesis_time: '2022-05-20T16:00:21.735122717Z'
+        voting_power: '10'
+      history_check_timeout: 1205
+      ipfs_domain_name: null
+      keeper_allowed_retries: 3
+      keeper_timeout: 30.0
+      max_attempts: 10
+      max_healthcheck: 120
+      on_chain_service_id: null
+      request_retry_delay: 1.0
+      request_timeout: 10.0
+      reset_pause_duration: 10
+      reset_tendermint_after: 2
+      retry_attempts: 400
+      retry_timeout: 3
+      round_timeout_seconds: 30.0
+      service_id: portfolio_manager
+      service_registry_address: null
+      setup:
+        all_participants:
+        - '0x0000000000000000000000000000000000000000'
+        consensus_threshold: null
+        safe_contract_address: '0x0000000000000000000000000000000000000000'
+      share_tm_config_on_startup: false
+      sleep_time: 1
+      tendermint_check_sleep_delay: 3
+      tendermint_com_url: http://localhost:8080
+      tendermint_max_retries: 5
+      tendermint_p2p_url: localhost:26656
+      tendermint_url: http://localhost:26657
+      tx_timeout: 10.0
+      validate_timeout: 1205
+    class_name: Params
+  requests:
+    args: {}
+    class_name: Requests
+  signing_dialogues:
+    args: {}
+    class_name: SigningDialogues
+  state:
+    args: {}
+    class_name: SharedState
+  tendermint_dialogues:
+    args: {}
+    class_name: TendermintDialogues
+dependencies: {}
+is_abstract: false
+customs: []
