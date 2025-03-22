@@ -1,0 +1,32 @@
+name: portfolio_manager
+author: valory
+version: 0.1.0
+type: contract
+description: Portfolio Manager contract for rebalancing.
+license: Apache-2.0
+aea_version: '>=1.0.0, <2.0.0'
+fingerprint:
+  PortfolioManager.sol: bafybeih3w5mypsdoaledyypo4geci36qobfphlfjj57ocw7xsq4d4ssgzy
+  README.md: bafybeig7bn4b2lybtf5liubkttxzds74telnxej6okrhdzrp4oh7u3ydgu
+  __init__.py: bafybeiavn5fh7mwnulrrtu7nnguyknsczcgbuazu7njokdeygb6wnfmdjy
+  build/portfolio_manager.json: bafybeieidxxhbxbgtryc6izsiiewoyoobv2sea3kayfixvjimgrut77jfm
+  contract.py: bafybeihrb2bj6fcfxbvlixq6ewiz4kcboiukw2ju6k3bz4s7cjtwijkzke
+fingerprint_ignore_patterns: []
+contracts: []
+class_name: PORTFOLIOMANAGER
+contract_interface_paths:
+  ethereum: build/portfolio_manager.json
+dependencies:
+  ecdsa:
+    version: '>=0.15'
+  eth_typing: {}
+  hexbytes: {}
+  open-aea-ledger-ethereum:
+    version: ==1.55.0
+  open-aea-test-autonomy:
+    version: ==0.15.2
+  packaging: {}
+  requests:
+    version: ==2.28.1
+  web3:
+    version: <7,>=6.0.0

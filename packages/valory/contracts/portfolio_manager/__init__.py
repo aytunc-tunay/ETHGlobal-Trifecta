@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #
-#   Copyright 2025 Valory AG
+#   Copyright 2023-2024 Valory AG
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -17,11 +17,4 @@
 #
 # ------------------------------------------------------------------------------
 
-"""Test the handlers.py module of the PortfolioManager."""
-
-import packages.aytunc.skills.portfolio_manager__abci.handlers  # noqa
-
-
-def test_import() -> None:
-    """Test that the 'handlers.py' of the PortfolioManager can be imported."""
-
+"""This module contains the support resources for PortfolioManager.sol"""

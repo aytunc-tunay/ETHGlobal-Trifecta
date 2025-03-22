@@ -1,4 +1,4 @@
-name: portfolio_manager__abci
+name: portfolio_manager_abci
 author: aytunc
 version: 0.1.0
 type: skill
@@ -7,26 +7,26 @@ license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
   __init__.py: bafybeiclhaa7mzkjkkwlqnbv6ojaclvxljwbzgk7pxbqfjqfvh42snoevi
-  behaviours.py: bafybeieky5nciocmudmmmdgdepqexvxyblruu3s4p4qewkoxl2qnaq2b7y
+  behaviours.py: bafybeib65okrqqp7jh45qbflx7v6kbn4y3epzfobrncvvnz2ucfkivjgge
+  behaviours_old.py: bafybeifn2qj6lbrlafww2jxgtzniprzch52jmegwoczocpvmjfqdirsrby
   dialogues.py: bafybeia4fawttsphlp5olwv75lnis7c6dvf6ncuxgecnero6jbf5ihzybe
   fsm_specification.yaml: bafybeifcymmzrcubmlofp7y53e5vnrutjuxglig2vmtqoddhova35jd2oq
   handlers.py: bafybeiaryz37oukqbplz3ku7q5yezpkbyalc5y6a7ngqmm4moteq5d2eei
-  models.py: bafybeihruk2dxse2iwu25aqwqvsicauifx3m4t7r2w7gyj23rrtb2tn3b4
-  payloads.py: bafybeigkhfcq6nqxw74ipyff7gdssnptl2qbvsywohwb6hupjgdiie22qy
-  rounds.py: bafybeifcs6plpev27m535kex6qdi7edmsogdowybk2rk5k6d2lnt5wt7ni
-  tests/__init__.py: bafybeiahrgo3y42b6bxjb3bl3eivsyus2yzu7xa3mleqrldswrg6c6qnpe
-  tests/test_behaviours.py: bafybeiehourx2zadpndpkpheecylmjorg7rk3mk3a6mgbxqbih4ybl2bai
-  tests/test_dialogues.py: bafybeiavgqfqhvzdpoby6oekrzj5c52ji3padcgpfllfibunauvyz3nzfi
-  tests/test_handlers.py: bafybeihodxe56u3ofwmok444im3afctzukemsqyao36k5zsz7txryae4bm
-  tests/test_models.py: bafybeicdp3h2nv6eo3yc26svrpcfcj4wihvamwwixnltkeexq73ga444w4
-  tests/test_payloads.py: bafybeicbwwtmw55uizjm4hluxprnt73npgpjixoqmmufjrgshizlapxivq
-  tests/test_rounds.py: bafybeia2577rn5vfipymvzdot6fjo5r4loqabfyma3gphyyfoa3usmykam
+  models.py: bafybeielmhl4tmzn5im3yadv2lisa7ojczk6ch4ds4hofhzhmrqe3qdutu
+  payloads.py: bafybeif2s6lno3fofyyje3hieq3s4mhpqenjmkinlufvrcwunsb37cvhay
+  rounds.py: bafybeicddzjy3chxq3rs7dyphizbbjlhjrdhgtkbp5icuu5i4rasrprmmy
 fingerprint_ignore_patterns: []
 connections: []
-contracts: []
-protocols: []
+contracts:
+- valory/gnosis_safe:0.1.0:bafybeiho6sbfts3zk3mftrngw37d5qnlvkqtnttt3fzexmcwkeevhu4wwi
+- valory/portfolio_manager:0.1.0:bafybeibypesdz25q7iewmphnxlf5nvmihtcxxin56k46aoaybnl7po4zaq
+- valory/multisend:0.1.0:bafybeig5byt5urg2d2bsecufxe5ql7f4mezg3mekfleeh32nmuusx66p4y
+protocols:
+- valory/contract_api:1.0.0:bafybeidgu7o5llh26xp3u3ebq3yluull5lupiyeu6iooi2xyymdrgnzq5i
+- valory/ledger_api:1.0.0:bafybeihdk6psr4guxmbcrc26jr2cbgzpd5aljkqvpwo64bvaz7tdti2oni
 skills:
-- valory/abstract_round_abci:0.1.0
+- valory/abstract_round_abci:0.1.0:bafybeibovsktd3uxur45nrcomq5shcn46cgxd5idmhxbmjhg32c5abyqim
+- valory/transaction_settlement_abci:0.1.0:bafybeihq2yenstblmaadzcjousowj5kfn5l7ns5pxweq2gcrsczfyq5wzm
 behaviours:
   main:
     args: {}
@@ -126,7 +126,72 @@ models:
       tendermint_url: http://localhost:26657
       tx_timeout: 10.0
       validate_timeout: 1205
+      use_termination: false
+      use_slashing: false
+      slash_cooldown_hours: 3
+      slash_threshold_amount: 10000000000000000
+      light_slash_unit_amount: 5000000000000000
+      serious_slash_unit_amount: 8000000000000000
+      multisend_batch_size: 50
+      transfer_target_address: '0x0000000000000000000000000000000000000000'
+      olas_token_address: '0xcE11e14225575945b8E6Dc0D4F2dD4C570f79d9f'
+      multisend_address: '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761'
+      portfolio_address: ''
+      portfolio_manager_contract_address: ''
     class_name: Params
+  coinmarketcap_specs:
+    args:
+      api_id: coinmarketcap
+      headers:
+        Accept: application/json
+      method: GET
+      parameters:
+        symbol: null
+        convert: USD
+        CMC_PRO_API_KEY: null
+      response_type: dict
+      response_key: data
+      retries: 5
+      url: https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest
+    class_name: CoinMarketCapSpecs
+  thegraph_specs:
+    args:
+      api_id: thegraph
+      headers:
+        Accept: application/json
+        Content-Type: application/json
+      method: POST
+      parameters:
+        query: ''
+      response_type: dict
+      response_key: data
+      retries: 5
+      url: https://gateway.thegraph.com/api/{api-key}/subgraphs/id/5zvR82QoaXYFyDEKLZ9t6v9adgnptxYpKpSbxtgVENFV
+    class_name: TheGraphSpecs
+  openai_specs:
+    args:
+      api_id: openai
+      headers:
+        Content-Type: application/json
+        Authorization: null
+      method: POST
+      url: https://api.openai.com/v1/chat/completions
+      parameters:
+        model: gpt-4o-mini
+        messages:
+        - role: system
+          content: You are a helpful assistant.
+        - role: user
+          content: "Based on the following portfolio and market data:\n{market_summary}\n\
+            \nProvide a single swap recommendation as JSON with two fields:\n1. 'action':\
+            \ specify direction (WETH to USDC or USDC to WETH) and percentage to swap\
+            \ (1-10%)\n2. 'reason': brief explanation in 10 words or less\n\nResponse\
+            \ format example:\n{\n  \"action\": \"swap 3% of weth to usdc\",\n  \"\
+            reason\": \"decreasing volume suggests potential price decline\"\n}\n"
+      response_type: dict
+      response_key: choices
+      retries: 5
+    class_name: OpenAISpecs
   requests:
     args: {}
     class_name: Requests
@@ -140,5 +205,5 @@ models:
     args: {}
     class_name: TendermintDialogues
 dependencies: {}
-is_abstract: false
+is_abstract: true
 customs: []
