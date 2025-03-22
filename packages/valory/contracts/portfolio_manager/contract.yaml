@@ -6,11 +6,11 @@ description: Portfolio Manager contract for rebalancing.
 license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
-  PortfolioManager.sol: bafybeih3w5mypsdoaledyypo4geci36qobfphlfjj57ocw7xsq4d4ssgzy
+  PortfolioManager.sol: bafybeidqqzjdofs2rvwx3eoqh4lno6hilmw5dujf5zgn4qcfpgrmhoj53e
   README.md: bafybeig7bn4b2lybtf5liubkttxzds74telnxej6okrhdzrp4oh7u3ydgu
   __init__.py: bafybeiavn5fh7mwnulrrtu7nnguyknsczcgbuazu7njokdeygb6wnfmdjy
-  build/portfolio_manager.json: bafybeieidxxhbxbgtryc6izsiiewoyoobv2sea3kayfixvjimgrut77jfm
-  contract.py: bafybeihrb2bj6fcfxbvlixq6ewiz4kcboiukw2ju6k3bz4s7cjtwijkzke
+  build/portfolio_manager.json: bafybeiasagbpi7y62d6rqyj2q7ba4sp374jydm3hy56yybnughe3vufhle
+  contract.py: bafybeieddnnyigfel4qzsuaftx7xpwu5jfnoy7rln3jtkjwadsmphk5jfi
 fingerprint_ignore_patterns: []
 contracts: []
 class_name: PORTFOLIOMANAGER

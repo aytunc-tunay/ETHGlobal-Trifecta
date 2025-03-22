@@ -114,4 +114,24 @@ contract AgenticEthereumPortfolioManager {
         }
         portfolio.balances[params.tokenToBuy] += amountOut;
     }
+
+    function storeReportHash(address user, string calldata ipfsHash) external onlySafe {
+        require(portfolios[user].registered, "User not registered");
+        UserPortfolio storage portfolio = portfolios[user];
+
+        // If the user already has 10 IPFS reports, remove the oldest
+        if (portfolio.ipfsReports.length == 10) {
+            for (uint256 i = 0; i < 9; i++) {
+                portfolio.ipfsReports[i] = portfolio.ipfsReports[i + 1];
+            }
+            portfolio.ipfsReports.pop();
+        }
+
+        portfolio.ipfsReports.push(ipfsHash);
+    }
+
+    function getIpfsReports(address user) external view returns (string[] memory) {
+        require(portfolios[user].registered, "User not registered");
+        return portfolios[user].ipfsReports;
+    }
 }

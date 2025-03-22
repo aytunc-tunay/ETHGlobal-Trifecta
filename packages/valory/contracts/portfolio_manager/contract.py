@@ -181,3 +181,42 @@ class PORTFOLIOMANAGER(Contract):
         contract_instance = cls.get_instance(ledger_api, contract_address)
         router_address = contract_instance.functions.swapRouter().call()
         return {"swap_router": router_address}
+
+    @classmethod
+    def store_report_hash(
+        cls,
+        ledger_api: EthereumApi,
+        contract_address: str,
+        user: str,
+        ipfs_hash: str,
+        from_address: str,
+    ) -> JSONLike:
+        """
+        Store an IPFS report hash for a given user. Only callable by the safeAddress.
+        
+        :param ledger_api: Ethereum API instance for contract interaction.
+        :param contract_address: Address of the deployed contract.
+        :param user: Address of the user portfolio.
+        :param ipfs_hash: IPFS hash to store.
+        :param from_address: Address initiating the transaction (should be the safe).
+        :return: Transaction dictionary.
+        """
+        contract_instance = cls.get_instance(ledger_api, contract_address)
+        transaction = contract_instance.functions.storeReportHash(user, ipfs_hash).build_transaction({
+            "from": from_address
+        })
+        return transaction
+
+    @classmethod
+    def get_ipfs_reports(
+        cls,
+        ledger_api: EthereumApi,
+        contract_address: str,
+        user: str,
+    ) -> JSONLike:
+        """
+        Get the array of IPFS report hashes for a user.
+        """
+        contract_instance = cls.get_instance(ledger_api, contract_address)
+        reports = contract_instance.functions.getIpfsReports(user).call()
+        return {"reports": reports}
