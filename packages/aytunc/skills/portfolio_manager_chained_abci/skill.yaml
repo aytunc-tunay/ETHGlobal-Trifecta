@@ -21,7 +21,7 @@ skills:
 - valory/registration_abci:0.1.0:bafybeicnth5q4httefsusywx3zrrq4al47owvge72dqf2fziruicq6hqta
 - valory/reset_pause_abci:0.1.0:bafybeievjciqdvxhqxfjd4whqs27h6qbxqzrae7wwj7fpvxlvmtw3x35im
 - valory/termination_abci:0.1.0:bafybeid54buqxipiuduw7b6nnliiwsxajnltseuroad53wukfonpxca2om
-- aytunc/portfolio_manager_abci:0.1.0:bafybeifnz73me6zp22avtgaxahuw3o6wjti34a4l753mwuph74pr5z6vsi
+- aytunc/portfolio_manager_abci:0.1.0:bafybeieqnfhgf564vwiwdbkjlcedc3rt2fjkeyn5qb6gdunecxxvw43kxy
 - valory/transaction_settlement_abci:0.1.0:bafybeihq2yenstblmaadzcjousowj5kfn5l7ns5pxweq2gcrsczfyq5wzm
 behaviours:
   main:

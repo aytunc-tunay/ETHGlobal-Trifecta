@@ -80,6 +80,11 @@ class SynchronizedData(BaseSynchronizedData):
         return self.db.get("adjustment_balances", None)
 
     @property
+    def ipfs_hash(self) -> Optional[str]:
+        """Get the ipfs hash."""
+        return self.db.get("ipfs_hash", None)
+
+    @property
     def participant_to_data_round(self) -> DeserializedCollection:
         """Agent to payload mapping for the DataPullRound."""
         return self._get_deserialized("participant_to_data_round")
@@ -89,10 +94,6 @@ class SynchronizedData(BaseSynchronizedData):
         """Agent to payload mapping for the DecisionMakingRound."""
         return self._get_deserialized("participant_to_decision_making_round")
 
-    @property
-    def api_selection(self) -> str:
-        """Get the api selection choice."""
-        return self.db.get("api_selection", "coingecko")
 
     @property
     def most_voted_tx_hash(self) -> Optional[float]:
@@ -148,6 +149,7 @@ class DataPullRound(CollectSameUntilThresholdRound):
         get_name(SynchronizedData.token_values),
         get_name(SynchronizedData.total_portfolio_value),
     )
+    
 
 class DecisionMakingRound(CollectSameUntilThresholdRound):
     """DecisionMakingRound"""
@@ -178,6 +180,7 @@ class DecisionMakingRound(CollectSameUntilThresholdRound):
     collection_key = get_name(SynchronizedData.participant_to_decision_making_round)
     selection_key = (
         get_name(SynchronizedData.adjustment_balances),
+        get_name(SynchronizedData.ipfs_hash),
     )
 
     def end_block(self) -> Optional[Tuple[BaseSynchronizedData, Event]]:
@@ -195,11 +198,14 @@ class DecisionMakingRound(CollectSameUntilThresholdRound):
                 self.context.logger.error("Most voted payload data not found.")
                 return self.synchronized_data, Event.ERROR
 
-            # Extract `adjustment_balances` and update synchronized data
+            # Extract `adjustment_balances` and `ipfs_hash` and update synchronized data
             adjustment_balances = most_voted_payload_data.adjustment_balances
+            ipfs_hash = most_voted_payload_data.ipfs_hash
+            
             if adjustment_balances is not None:
                 new_synchronized_data = self.synchronized_data.update(
-                    adjustment_balances=adjustment_balances
+                    adjustment_balances=adjustment_balances,
+                    ipfs_hash=ipfs_hash
                 )
             else:
                 self.context.logger.warning("Adjustment balances not found in payload.")

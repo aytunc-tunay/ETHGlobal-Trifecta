@@ -42,6 +42,7 @@ class DecisionMakingPayload(BaseTxPayload):
     # TODO: define your attributes
     event: str
     adjustment_balances: Optional[str] # Store as JSON string for hashability
+    ipfs_hash: str
 
 
 @dataclass(frozen=True)
