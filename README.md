@@ -1,3 +1,19 @@
+## ⚠️ Note for ETHGlobal Judges
+
+This repository was flagged for having too many lines changed in a single commit ([see check failure](https://github.com/aytunc-tunay/ETHGlobal-Trifecta/commit/339d06ea78545e4dfee002efa47e82f073e8c334)). This is expected and intentional - the large initial commit is due to using the Autonolas FSM App scaffold tool which auto-generates the necessary boilerplate code and project structure.
+
+The scaffold tool creates:
+- FSM (Finite State Machine) specifications 
+- Base class templates
+- Required handlers and behaviors
+- Standard project structure
+
+This scaffolding approach is standard practice when building on Autonolas, as it ensures consistent architecture and best practices. The generated code provides the foundation that we then customized for our specific use case.
+
+For more details on the FSM App scaffolding process, please see the [Autonolas documentation](https://docs.olas.network/open-autonomy/guides/code_fsm_app_skill/).
+
+
+
 # ETHGlobal-Trifecta
 
 An AI-powered portfolio management service built with Autonolas agents.
@@ -124,8 +140,13 @@ ETHGlobal-Trifecta/
 ├── packages/                # Autonolas packages
 ├── scripts/                 # Utility scripts
 ├── website/                 # Frontend web interface
+├── fsm_specification.yaml   # Finite state machine specification for the agent
 ├── pyproject.toml           # Python project dependencies
 ├── README.md                # This documentation
 ├── run_agent.sh             # Agent runner script
 └── sample.env               # Template for environment variables
 ```
+
+
+
+
