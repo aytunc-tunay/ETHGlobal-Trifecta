@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Portfolio Manager | ETHGlobal Trifecta</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --primary-hover: #4f46e5;
+            --success-color: #22c55e;
+            --success-hover: #16a34a;
+            --danger-color: #ef4444;
+            --danger-hover: #dc2626;
+            --background-color: #f8fafc;
+            --card-background: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: var(--card-background);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+
+        .card h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .wallet-section {
+            background: var(--card-background);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+
+        .wallet-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .wallet-address {
+            font-family: monospace;
+            background: var(--background-color);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            gap: 0.5rem;
+        }
+
+        .button-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .button-primary:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .button-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .button-success:hover {
+            background-color: var(--success-hover);
+        }
+
+        .button-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .button-danger:hover {
+            background-color: var(--danger-hover);
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .select-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            background-color: white;
+            cursor: pointer;
+        }
+
+        .charts-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .chart-container {
+            background: var(--card-background);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px -1px rgb(0 0 0 / 0.1);
+        }
+
+        .balance-details {
+            margin-top: 1.5rem;
+        }
+
+        .balance-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .balance-item:last-child {
+            border-bottom: none;
+        }
+
+        .balance-label {
+            color: var(--text-secondary);
+        }
+
+        .balance-value {
+            font-weight: 600;
+        }
+
+        .reports-list {
+            margin-top: 1rem;
+        }
+
+        .report-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem;
+            background: var(--background-color);
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .report-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .report-link:hover {
+            color: var(--primary-hover);
+        }
+
+        .error-message {
+            color: var(--danger-color);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .reports-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .reports-table th,
+        .reports-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .reports-table th {
+            background-color: var(--background-color);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .reports-table tr:hover {
+            background-color: var(--background-color);
+        }
+
+        .report-link {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .report-link:hover {
+            color: var(--primary-hover);
+            text-decoration: underline;
+        }
+
+        .portfolio-status {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .token-status {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>AI Portfolio Manager</h1>
+            <p>Automated portfolio management powered by AI agents</p>
+        </div>
+
+        <div class="wallet-section">
+            <h2>Wallet Connection</h2>
+            <div class="wallet-info">
+                <button id="connectWalletBtn" class="button button-primary" onclick="connectWallet()">
+                    Connect Wallet
+                </button>
+                <button id="disconnectWalletBtn" class="button button-danger" onclick="disconnectWallet()" style="display: none;">
+                    Disconnect
+                </button>
+                <span id="walletAddress" class="wallet-address"></span>
+            </div>
+            <p id="walletError" class="error-message"></p>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h2>Deposit Tokens</h2>
+                <div class="form-group">
+                    <label for="tokenSelect">Select Token</label>
+                    <select id="tokenSelect" class="select-control">
+                        <option value="usdc">USDC</option>
+                        <option value="weth">WETH</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="amountInput">Amount</label>
+                    <input type="number" id="amountInput" class="form-control" placeholder="Enter amount"/>
+                </div>
+                <button class="button button-success" onclick="deposit()">Deposit</button>
+            </div>
+
+            <div class="card">
+                <h2>Withdraw Tokens</h2>
+                <div class="form-group">
+                    <label for="tokenWithdraw">Select Token</label>
+                    <select id="tokenWithdraw" class="select-control">
+                        <option value="usdc">USDC</option>
+                        <option value="weth">WETH</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="withdrawAmount">Amount</label>
+                    <input type="number" id="withdrawAmount" class="form-control" placeholder="Enter amount"/>
+                </div>
+                <button class="button button-primary" onclick="withdraw()">Withdraw</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Portfolio Overview</h2>
+            <div class="charts-container">
+                <div class="chart-container">
+                    <canvas id="balanceChart"></canvas>
+                    <p class="chart-title">Token Distribution</p>
+                </div>
+                <div class="chart-container">
+                    <canvas id="valueChart"></canvas>
+                    <p class="chart-title">Value Distribution (USD)</p>
+                </div>
+            </div>
+            <div class="balance-details">
+                <div class="balance-item">
+                    <span class="balance-label">USDC Balance</span>
+                    <span id="usdcBalance" class="balance-value">0 USDC</span>
+                </div>
+                <div class="balance-item">
+                    <span class="balance-label">USDC Value</span>
+                    <span id="usdcValue" class="balance-value">$0.00</span>
+                </div>
+                <div class="balance-item">
+                    <span class="balance-label">WETH Balance</span>
+                    <span id="wethBalance" class="balance-value">0 WETH</span>
+                </div>
+                <div class="balance-item">
+                    <span class="balance-label">WETH Value</span>
+                    <span id="wethValue" class="balance-value">$0.00</span>
+                </div>
+                <div class="balance-item">
+                    <span class="balance-label">Total Portfolio Value</span>
+                    <span id="totalValue" class="balance-value">$0.00</span>
+                </div>
+            </div>
+            <button class="button button-primary" onclick="fetchBalances()" style="margin-top: 1rem;">
+                Refresh Balances
+            </button>
+        </div>
+
+        <div class="card">
+            <h2>Agent Reports</h2>
+            <button class="button button-primary" onclick="fetchReports()">Refresh Reports</button>
+            <div class="reports-list">
+                <table class="reports-table">
+                    <thead>
+                        <tr>
+                            <th>Report Link</th>
+                            <th>Timestamp</th>
+                            <th>Action</th>
+                            <th>Reason</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reportsTableBody">
+                        <!-- Reports will be dynamically added here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    let userAddress = null;
+    const TOKEN_ADDRESSES = {
+        usdc: '{{ config.USDC_ADDRESS }}',
+        weth: '{{ config.WETH_ADDRESS }}'
+    };
+    let balanceChart = null;
+    let valueChart = null;
+
+    async function connectWallet() {
+        const errorElement = document.getElementById('walletError');
+        try {
+            if (typeof window.ethereum === 'undefined') {
+                errorElement.textContent = 'MetaMask is not installed!';
+                alert('Please install MetaMask!');
+                return;
+            }
+
+            console.log('Requesting accounts...');
+            errorElement.textContent = 'Requesting accounts...';
+
+            const accounts = await window.ethereum.request({ 
+                method: 'eth_requestAccounts' 
+            });
+            
+            console.log('Accounts received:', accounts);
+
+            if (accounts && accounts.length > 0) {
+                userAddress = accounts[0];
+                updateWalletUI(true);
+                errorElement.textContent = ''; // Clear any error
+                await fetchBalances(); // Fetch balances immediately after connecting
+            } else {
+                errorElement.textContent = 'No accounts received';
+            }
+
+        } catch (error) {
+            console.error('Wallet connection error:', error);
+            errorElement.textContent = `Error: ${error.message}`;
+            alert('Failed to connect wallet: ' + error.message);
+        }
+    }
+
+    async function disconnectWallet() {
+        try {
+            userAddress = null;
+            updateWalletUI(false);
+            clearCharts();
+        } catch (error) {
+            console.error('Disconnect error:', error);
+            alert('Error disconnecting wallet: ' + error.message);
+        }
+    }
+
+    function clearCharts() {
+        if (balanceChart) {
+            balanceChart.destroy();
+            balanceChart = null;
+        }
+        if (valueChart) {
+            valueChart.destroy();
+            valueChart = null;
+        }
+        // Clear all balance displays
+        const elements = [
+            'usdcBalance', 'usdcValue',
+            'wethBalance', 'wethValue',
+            'totalValue'
+        ];
+        elements.forEach(id => {
+            const element = document.getElementById(id);
+            if (element) {
+                element.textContent = id.includes('Value') ? '$0.00' : '0 ' + (id.includes('usdc') ? 'USDC' : 'WETH');
+            }
+        });
+    }
+
+    function updateWalletUI(connected) {
+        const connectBtn = document.getElementById('connectWalletBtn');
+        const disconnectBtn = document.getElementById('disconnectWalletBtn');
+        const addressElement = document.getElementById('walletAddress');
+        
+        if (connected && userAddress) {
+            connectBtn.style.display = 'none';
+            disconnectBtn.style.display = 'block';
+            addressElement.textContent = `Connected: ${userAddress.slice(0,6)}...${userAddress.slice(-4)}`;
+            addressElement.style.color = '#4CAF50';
+        } else {
+            connectBtn.style.display = 'block';
+            disconnectBtn.style.display = 'none';
+            addressElement.textContent = 'Not connected';
+            addressElement.style.color = '#ff4444';
+            clearCharts();
+        }
+    }
+
+    async function fetchBalances() {
+        if (!userAddress) {
+            alert('Please connect your wallet first');
+            return;
+        }
+
+        try {
+            const response = await fetch(`/api/balances?address=${userAddress}`);
+            const data = await response.json();
+            
+            if (!data.success) throw new Error(data.error);
+            
+            // Update token balance displays
+            const elements = {
+                'usdcBalance': `${data.balances.usdc.toFixed(6)} USDC`,
+                'usdcValue': `$${data.usd_values.usdc.toFixed(2)}`,
+                'wethBalance': `${data.balances.weth.toFixed(6)} WETH`,
+                'wethValue': `$${data.usd_values.weth.toFixed(2)}`,
+                'totalValue': `$${data.usd_values.total.toFixed(2)}`
+            };
+
+            // Update all elements
+            Object.entries(elements).forEach(([id, value]) => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.textContent = value;
+                }
+            });
+            
+            // Update charts
+            updateBalanceChart(data.balances);
+            updateValueChart(data.usd_values);
+            
+            // Fetch reports after balances are updated
+            await fetchReports();
+            
+        } catch (error) {
+            console.error('Error fetching balances:', error);
+            alert('Failed to fetch balances: ' + error.message);
+        }
+    }
+
+    function updateBalanceChart(balances) {
+        const ctx = document.getElementById('balanceChart');
+        
+        if (balanceChart) {
+            balanceChart.destroy();
+        }
+        
+        balanceChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['USDC', 'WETH'],
+                datasets: [{
+                    data: [balances.usdc, balances.weth],
+                    backgroundColor: [
+                        'rgba(26, 188, 156, 1)',  // USDC color
+                        'rgba(155, 89, 182, 1)'   // WETH color
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                animation: {
+                    duration: 0 // Disable animations
+                },
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const value = context.raw.toFixed(6);
+                                return `${context.label}: ${value}`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function updateValueChart(usdValues) {
+        const ctx = document.getElementById('valueChart');
+        
+        if (valueChart) {
+            valueChart.destroy();
+        }
+        
+        valueChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['USDC', 'WETH'],
+                datasets: [{
+                    data: [usdValues.usdc, usdValues.weth],
+                    backgroundColor: [
+                        'rgba(26, 188, 156, 1)',  // USDC color
+                        'rgba(155, 89, 182, 1)'   // WETH color
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                animation: {
+                    duration: 0 // Disable animations
+                },
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const value = context.raw.toFixed(2);
+                                return `${context.label}: $${value}`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // Add fixed height to chart containers
+    const chartContainers = document.querySelectorAll('.chart-container');
+    chartContainers.forEach(container => {
+        container.style.height = '300px';
+    });
+
+    // Check initial connection on page load
+    document.addEventListener('DOMContentLoaded', async function() {
+        if (window.ethereum) {
+            try {
+                const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+                if (accounts.length > 0) {
+                    userAddress = accounts[0];
+                    updateWalletUI(true);
+                    await fetchBalances();
+                    await fetchReports(); // Fetch reports on page load
+                } else {
+                    updateWalletUI(false);
+                }
+            } catch (error) {
+                console.error('Error checking initial wallet state:', error);
+                updateWalletUI(false);
+            }
+        }
+    });
+
+    // Update the accountsChanged event listener to also fetch reports
+    if (window.ethereum) {
+        window.ethereum.on('accountsChanged', async function (accounts) {
+            console.log('Accounts changed:', accounts);
+            if (accounts.length === 0) {
+                userAddress = null;
+                updateWalletUI(false);
+                document.getElementById('walletError').textContent = 'Wallet disconnected';
+            } else {
+                userAddress = accounts[0];
+                updateWalletUI(true);
+                document.getElementById('walletError').textContent = '';
+                await fetchBalances();
+                await fetchReports(); // Fetch reports when account changes
+            }
+        });
+
+        // Listen for chain changes
+        window.ethereum.on('chainChanged', function (chainId) {
+            console.log('Chain changed:', chainId);
+            window.location.reload();
+        });
+    }
+
+    async function deposit() {
+        if (!userAddress) {
+            alert('Please connect your wallet first');
+            return;
+        }
+
+        const tokenSelect = document.getElementById('tokenSelect');
+        const amount = document.getElementById('amountInput').value;
+        const tokenAddress = TOKEN_ADDRESSES[tokenSelect.value];
+
+        try {
+            // Get approval and deposit data from backend
+            const response = await fetch('/api/approve_and_deposit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    tokenAddress,
+                    amount,
+                    userAddress
+                })
+            });
+            const data = await response.json();
+            if (!data.success) throw new Error(data.error);
+
+            // Send approve transaction
+            const approveTx = await window.ethereum.request({
+                method: 'eth_sendTransaction',
+                params: [{
+                    from: userAddress,
+                    to: data.approveData.to,
+                    data: data.approveData.data
+                }]
+            });
+
+            // Wait for approval confirmation
+            await waitForTransaction(approveTx);
+
+            // Send deposit transaction
+            const depositTx = await window.ethereum.request({
+                method: 'eth_sendTransaction',
+                params: [{
+                    from: userAddress,
+                    to: data.depositData.to,
+                    data: data.depositData.data
+                }]
+            });
+
+            alert('Deposit successful!');
+        } catch (error) {
+            console.error('Error during deposit:', error);
+            alert('Failed to deposit: ' + error.message);
+        }
+    }
+
+    async function waitForTransaction(txHash) {
+        return new Promise((resolve, reject) => {
+            const checkTx = async () => {
+                try {
+                    const receipt = await window.ethereum.request({
+                        method: 'eth_getTransactionReceipt',
+                        params: [txHash],
+                    });
+                    if (receipt) {
+                        resolve(receipt);
+                    } else {
+                        setTimeout(checkTx, 1000);
+                    }
+                } catch (error) {
+                    reject(error);
+                }
+            };
+            checkTx();
+        });
+    }
+
+    async function withdraw() {
+        if (!userAddress) {
+            alert('Please connect your wallet first');
+            return;
+        }
+
+        const tokenSelect = document.getElementById('tokenWithdraw');
+        const amount = document.getElementById('withdrawAmount').value;
+        
+        if (!amount || amount <= 0) {
+            alert('Please enter a valid amount');
+            return;
+        }
+
+        const tokenAddress = TOKEN_ADDRESSES[tokenSelect.value];
+        if (!tokenAddress) {
+            alert('Invalid token selected');
+            return;
+        }
+
+        try {
+            // Get withdraw data from backend
+            const response = await fetch('/api/withdraw', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    tokenAddress,
+                    amount,
+                    userAddress
+                })
+            });
+            
+            const data = await response.json();
+            if (!data.success) throw new Error(data.error);
+
+            // Send withdraw transaction
+            const withdrawTx = await window.ethereum.request({
+                method: 'eth_sendTransaction',
+                params: [{
+                    from: userAddress,
+                    to: data.withdrawData.to,
+                    data: data.withdrawData.data
+                }]
+            });
+
+            // Wait for transaction to be mined
+            await waitForTransaction(withdrawTx);
+            console.log('Withdraw transaction confirmed');
+
+            alert('Withdrawal successful!');
+            // Clear input
+            document.getElementById('withdrawAmount').value = '';
+            
+        } catch (error) {
+            console.error('Error during withdrawal:', error);
+            alert('Failed to withdraw: ' + error.message);
+        }
+    }
+
+    async function fetchReports() {
+        if (!userAddress) {
+            alert('Please connect your wallet first');
+            return;
+        }
+
+        try {
+            // First get the report URLs from our backend
+            const response = await fetch(`/api/reports?address=${userAddress}`);
+            const data = await response.json();
+            
+            const reportsTableBody = document.getElementById('reportsTableBody');
+            reportsTableBody.innerHTML = '';
+            
+            if (data.success && data.reports.length > 0) {
+                // Process each report
+                for (const report of data.reports) {
+                    try {
+                        // Fetch the actual JSON file from IPFS
+                        const reportResponse = await fetch(report.url);
+                        const reportData = await reportResponse.json();
+                        
+                        const row = document.createElement('tr');
+                        
+                        // Format timestamp
+                        const timestamp = new Date(reportData.timestamp).toLocaleString();
+                        
+                        // Extract recommendation data directly from the JSON
+                        const action = reportData.rebalancing_recommendation?.action || 'No action recommended';
+                        const reason = reportData.rebalancing_recommendation?.reason || 'No reason provided';
+                        
+                        row.innerHTML = `
+                            <td>
+                                <a href="${report.url}" target="_blank" class="report-link">
+                                    View Report
+                                </a>
+                            </td>
+                            <td>${timestamp}</td>
+                            <td>${action}</td>
+                            <td>${reason}</td>
+                        `;
+                        
+                        reportsTableBody.appendChild(row);
+                    } catch (reportError) {
+                        console.error('Error fetching report:', reportError);
+                        continue; // Skip this report if there's an error
+                    }
+                }
+
+                // If no reports were successfully processed
+                if (reportsTableBody.children.length === 0) {
+                    reportsTableBody.innerHTML = `
+                        <tr>
+                            <td colspan="4" style="text-align: center; color: var(--text-secondary);">
+                                No valid reports available
+                            </td>
+                        </tr>
+                    `;
+                }
+            } else {
+                reportsTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="4" style="text-align: center; color: var(--text-secondary);">
+                            No reports available
+                        </td>
+                    </tr>
+                `;
+            }
+        } catch (error) {
+            console.error('Error fetching reports:', error);
+            const reportsTableBody = document.getElementById('reportsTableBody');
+            reportsTableBody.innerHTML = `
+                <tr>
+                    <td colspan="4" style="text-align: center; color: var(--danger-color);">
+                        Error loading reports
+                    </td>
+                </tr>
+            `;
+        }
+    }
+    </script>
+</body>
+</html>
