@@ -15,7 +15,17 @@ For more details on the FSM App scaffolding process, please see the [Autonolas d
 
 # ETHGlobal-Trifecta
 
-An AI-powered portfolio management service built with Autonolas agents.
+An advanced, decentralized portfolio management platform that combines AI, secure smart contracts, and multi-agent coordination to optimize DeFi investments. Built on Autonolas, the system features a user-friendly Agent Marketplace where investors can choose from diverse strategies—each powered by a dedicated Agent configured with its own risk tolerance, rebalancing frequency, or asset focus. Once subscribed, users deposit their tokens into a specialized portfolio manager contract, secured by a Gnosis Safe multisig to ensure only the authorized Agent can initiate transactions.
+
+On the back end, each Agent continuously runs off-chain, gathering real-time market data, historical performance metrics, and user-specific information. This consolidated dataset is passed to an LLM—via either Nillion or OpenAI—to produce detailed recommendations for token swaps and portfolio adjustments, which are then executed through Uniswap V3. All actions are documented and published on IPFS, giving users transparent logs of every trade and the rationale behind it.
+
+By leveraging the consensus capabilities of Open Autonomy, the project coordinates multiple Agents without relying on a central server, creating a trust-minimized environment. A pruned Tendermint-based blockchain underpins the Agents’ internal agreement on states and events. Because the system enforces multisig approvals for each on-chain operation, security is bolstered against any single point of failure. Tenderly-forked Ethereum environments enable thorough testing in near-production conditions, ensuring reliability and safety before mainnet deployment.
+
+Overall, this project aims to simplify DeFi portfolio management through AI-driven automation, while maintaining transparency and user control. Investors retain the flexibility to withdraw at any time and can review each Agent’s performance and decision-making processes in real time. With its modular, extensible design, this platform can easily accommodate new LLMs or additional Agent strategies, providing a future-proof solution for autonomous, AI-powered DeFi optimization.
+
+
+[Project Page with Demo](https://ethglobal.com/showcase/ai-portfolio-maestro-xkhzf)
+
 
 ## System Requirements
 
