@@ -2,8 +2,7 @@
 
 This repository was flagged for having too many lines changed in a single commit ([see check failure](https://github.com/aytunc-tunay/ETHGlobal-Trifecta/commit/339d06ea78545e4dfee002efa47e82f073e8c334)). This is expected and intentional - the large initial commit is due to using the Autonolas FSM App scaffold tool which auto-generates the necessary boilerplate code and project structure.
 
-The scaffold tool creates:
-- FSM (Finite State Machine) specifications 
+The scaffold tool creates based on FSM (Finite State Machine) specifications:
 - Base class templates
 - Required handlers and behaviors
 - Standard project structure
