@@ -7,11 +7,11 @@ license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
   __init__.py: bafybeiclhaa7mzkjkkwlqnbv6ojaclvxljwbzgk7pxbqfjqfvh42snoevi
-  behaviours.py: bafybeiawtuvrdeqclzxtv26ykq6a6lfesysuta4jbnv6kx3zykhvpjuk6i
+  behaviours.py: bafybeidiz4bzyajwuq3yzssyiq4rnsizmxrlbkbubcecxd3t5r6y6atuu4
   dialogues.py: bafybeia4fawttsphlp5olwv75lnis7c6dvf6ncuxgecnero6jbf5ihzybe
   fsm_specification.yaml: bafybeifcymmzrcubmlofp7y53e5vnrutjuxglig2vmtqoddhova35jd2oq
   handlers.py: bafybeiaryz37oukqbplz3ku7q5yezpkbyalc5y6a7ngqmm4moteq5d2eei
-  models.py: bafybeielmhl4tmzn5im3yadv2lisa7ojczk6ch4ds4hofhzhmrqe3qdutu
+  models.py: bafybeigi63jkvhic7a6oetetiurvj6yw2t4ghqfls2u6vlabjyjiudvcam
   payloads.py: bafybeie6rl5ma63etdfvjl3nzrg6i6eq6al4yykcfllkbiatky5ppvkgtu
   rounds.py: bafybeid55kdrl2igh5y4tade4z57umnjcin7pknnpbvj7npmcwak2desra
 fingerprint_ignore_patterns: []
@@ -137,6 +137,7 @@ models:
       multisend_address: '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761'
       portfolio_address: ''
       portfolio_manager_contract_address: ''
+      llm_selection: ''
     class_name: Params
   coinmarketcap_specs:
     args:
@@ -191,6 +192,36 @@ models:
       response_key: choices
       retries: 5
     class_name: OpenAISpecs
+  nillion_specs:
+    args:
+      api_id: nillion
+      headers:
+        Content-Type: application/json
+        Accept: application/json
+        Authorization: null
+      method: POST
+      url: https://nilai-a779.nillion.network/v1/chat/completions
+      parameters:
+        model: meta-llama/Llama-3.1-8B-Instruct
+        messages:
+        - role: system
+          content: You are a helpful Defi assistant
+        - role: user
+          content: "Based on the following portfolio and market data:\n{market_summary}\n\
+            \nProvide a single swap recommendation as JSON with two fields:\n1. 'action':\
+            \ specify direction (WETH to USDC or USDC to WETH) and percentage to swap\
+            \ (1-10%)\n2. 'reason': brief explanation in 10 words or less\n\nResponse\
+            \ format example:\n{\n  \"action\": \"swap 3% of weth to usdc\",\n  \"\
+            reason\": \"decreasing volume suggests potential price decline\"\n}\n"
+        temperature: 0.2
+        top_p: 0.95
+        max_tokens: 2048
+        stream: false
+        nilrag: {}
+      response_type: dict
+      response_key: choices
+      retries: 5
+    class_name: NillionSpecs
   requests:
     args: {}
     class_name: Requests

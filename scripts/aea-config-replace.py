@@ -63,6 +63,11 @@ def main() -> None:
                 "Authorization"
             ] = f"Bearer {os.getenv('OPENAI_API_KEY')}"  # type: ignore
 
+            # Nillion API key (ApiSpecs)
+            config[-1]["models"]["nillion_specs"]["args"]["headers"][
+                "Authorization"
+            ] = f"Bearer {os.getenv('NILLION_API_KEY')}"  # type: ignore
+
             # ALL_PARTICIPANTS
             config[-1]["models"]["params"]["args"]["setup"][
                 "all_participants"
@@ -87,6 +92,11 @@ def main() -> None:
             config[-1]["models"]["params"]["args"][
                 "portfolio_address"
             ] = f"${{str:{os.getenv('PORTFOLIO_ADDRESS')}}}"  # type: ignore
+
+            # LLM_SELECTION
+            config[-1]["models"]["params"]["args"][
+                "llm_selection"
+            ] = f"${{str:{os.getenv('LLM_SELECTION')}}}"  # type: ignore
 
     with open(Path("portfolio_manager_agent", "aea-config.yaml"), "w", encoding="utf-8") as file:
         yaml.dump_all(config, file, sort_keys=False)

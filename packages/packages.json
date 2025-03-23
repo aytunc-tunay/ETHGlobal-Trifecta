@@ -1,9 +1,9 @@
 {
     "dev": {
         "contract/valory/portfolio_manager/0.1.0": "bafybeicmgkjhiibocjy72n7yvm5d7rx2377b6fdregoehtcb64lfy43bge",
-        "skill/aytunc/portfolio_manager_abci/0.1.0": "bafybeieqnfhgf564vwiwdbkjlcedc3rt2fjkeyn5qb6gdunecxxvw43kxy",
-        "skill/aytunc/portfolio_manager_chained_abci/0.1.0": "bafybeihocwv63ealmvsxzau7zzbe2ozzw4sf4w6xotfsqgipvzxfluhmb4",
-        "agent/aytunc/portfolio_manager_agent/0.1.0": "bafybeic7lrq5upgtziv6ecnqhz4fpykzzpcby4pmxvhhkamj5kpg6qbase"
+        "skill/aytunc/portfolio_manager_abci/0.1.0": "bafybeifmarimfj27hb5tdm7h3qsoveikq4wvaxtwqg67eyo3r73pmbtkwm",
+        "skill/aytunc/portfolio_manager_chained_abci/0.1.0": "bafybeiarccrmtpqfzlrnvn4aof72v2bftvt73vzdmjbpevodsu2zny4xlu",
+        "agent/aytunc/portfolio_manager_agent/0.1.0": "bafybeib47nqieovor73r7ebftunzm6654fiqalzfuopw7ylmgcixep2vdu"
     },
     "third_party": {
         "protocol/open_aea/signing/1.0.0": "bafybeihv62fim3wl2bayavfcg3u5e5cxu3b7brtu4cn5xoxd6lqwachasi",

@@ -11,7 +11,7 @@ fingerprint:
   composition.py: bafybeihg7ax5rqzy4dwqntbl2iopyncwbus7cu3d6xt32wdlrxlk2r4ngm
   dialogues.py: bafybeidfzjkhqafwjci4excrowd6ep422qqphljsepyfnjka6en3nz2klq
   handlers.py: bafybeifh6rmqazksgruvfhsyawlshr2dvq7flz3j7xwy3fq7ngev5735fm
-  models.py: bafybeidsipz6y4phiqiyggxpe77fykqzz55crkl2v2hfxuxdhfksuc4pe4
+  models.py: bafybeidyftpgk3bskuwzr5qk4oarzfrz2wsbhie66jlu5hk4niznyl3fze
 fingerprint_ignore_patterns: []
 connections: []
 contracts: []
@@ -21,7 +21,7 @@ skills:
 - valory/registration_abci:0.1.0:bafybeicnth5q4httefsusywx3zrrq4al47owvge72dqf2fziruicq6hqta
 - valory/reset_pause_abci:0.1.0:bafybeievjciqdvxhqxfjd4whqs27h6qbxqzrae7wwj7fpvxlvmtw3x35im
 - valory/termination_abci:0.1.0:bafybeid54buqxipiuduw7b6nnliiwsxajnltseuroad53wukfonpxca2om
-- aytunc/portfolio_manager_abci:0.1.0:bafybeieqnfhgf564vwiwdbkjlcedc3rt2fjkeyn5qb6gdunecxxvw43kxy
+- aytunc/portfolio_manager_abci:0.1.0:bafybeifmarimfj27hb5tdm7h3qsoveikq4wvaxtwqg67eyo3r73pmbtkwm
 - valory/transaction_settlement_abci:0.1.0:bafybeihq2yenstblmaadzcjousowj5kfn5l7ns5pxweq2gcrsczfyq5wzm
 behaviours:
   main:
@@ -138,6 +138,7 @@ models:
       olas_token_address: '0xcE11e14225575945b8E6Dc0D4F2dD4C570f79d9f'
       portfolio_address: null
       portfolio_manager_contract_address: null
+      llm_selection: null
     class_name: Params
   coinmarketcap_specs:
     args:
@@ -203,6 +204,35 @@ models:
       response_key: choices
       retries: 5
     class_name: OpenAISpecs
+  nillion_specs:
+    args:
+      api_id: nillion
+      headers:
+        Content-Type: application/json
+        Accept: application/json
+        Authorization: null
+      method: POST
+      url: https://nilai-a779.nillion.network/v1/chat/completions
+      parameters:
+        model: meta-llama/Llama-3.1-8B-Instruct
+        messages:
+        - role: system
+          content: You are a helpful Defi assistant.
+        - role: user
+          content: "Based on the following portfolio and market data:\n{market_summary}\n\
+            \nProvide a single swap recommendation as JSON with two fields:\n1. 'action':\
+            \ specify direction (WETH to USDC or USDC to WETH) and percentage to swap\
+            \ (1-10%)\n2. 'reason': brief explanation in 10 words or less\n\nResponse\
+            \ format example:\n{\n  \"action\": \"swap 3% of weth to usdc\",\n  \"\
+            reason\": \"decreasing volume suggests potential price decline\"\n}\n"
+        temperature: 0.2
+        top_p: 0.95
+        max_tokens: 2048
+        stream: false
+      response_type: dict
+      response_key: choices
+      retries: 5
+    class_name: NillionSpecs
   requests:
     args: {}
     class_name: Requests

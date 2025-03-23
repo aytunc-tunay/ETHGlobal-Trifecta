@@ -32,8 +32,8 @@ protocols:
 skills:
 - valory/abstract_abci:0.1.0:bafybeihu2bcgjk2tqjiq2zhk3uogtfszqn4osvdt7ho3fubdpdj4jgdfjm
 - valory/abstract_round_abci:0.1.0:bafybeibovsktd3uxur45nrcomq5shcn46cgxd5idmhxbmjhg32c5abyqim
-- aytunc/portfolio_manager_abci:0.1.0:bafybeieqnfhgf564vwiwdbkjlcedc3rt2fjkeyn5qb6gdunecxxvw43kxy
-- aytunc/portfolio_manager_chained_abci:0.1.0:bafybeihocwv63ealmvsxzau7zzbe2ozzw4sf4w6xotfsqgipvzxfluhmb4
+- aytunc/portfolio_manager_abci:0.1.0:bafybeifmarimfj27hb5tdm7h3qsoveikq4wvaxtwqg67eyo3r73pmbtkwm
+- aytunc/portfolio_manager_chained_abci:0.1.0:bafybeiarccrmtpqfzlrnvn4aof72v2bftvt73vzdmjbpevodsu2zny4xlu
 - valory/registration_abci:0.1.0:bafybeicnth5q4httefsusywx3zrrq4al47owvge72dqf2fziruicq6hqta
 - valory/reset_pause_abci:0.1.0:bafybeievjciqdvxhqxfjd4whqs27h6qbxqzrae7wwj7fpvxlvmtw3x35im
 - valory/termination_abci:0.1.0:bafybeid54buqxipiuduw7b6nnliiwsxajnltseuroad53wukfonpxca2om
@@ -190,6 +190,7 @@ models:
       olas_token_address: ${str:0xcE11e14225575945b8E6Dc0D4F2dD4C570f79d9f}
       portfolio_address: ${str:null}
       portfolio_manager_contract_address: ${str:null}
+      llm_selection: ${str:null}
   coinmarketcap_specs:
     args:
       api_id: coinmarketcap
@@ -230,6 +231,30 @@ models:
         messages:
         - role: system
           content: You are a helpful assistant.
+        - role: user
+          content: "Based on the following portfolio and market data:\n{market_summary}\n\
+            \nProvide a single swap recommendation as JSON with two fields:\n1. 'action':\
+            \ specify direction (WETH to USDC or USDC to WETH) and percentage to swap\
+            \ (1-10%)\n2. 'reason': brief explanation in 10 words or less\n\nResponse\
+            \ format example:\n{\n  \"action\": \"swap 3% of weth to usdc\",\n  \"\
+            reason\": \"decreasing volume suggests potential price decline\"\n}\n"
+      response_type: dict
+      response_key: choices
+      retries: 5
+  nillion_specs:
+    args:
+      api_id: nillion
+      headers:
+        Content-Type: application/json
+        Accept: application/json
+        Authorization: null
+      method: POST
+      url: https://nilai-a779.nillion.network/v1/chat/completions
+      parameters:
+        model: meta-llama/Llama-3.1-8B-Instruct
+        messages:
+        - role: system
+          content: You are a helpful Defi assistant.
         - role: user
           content: "Based on the following portfolio and market data:\n{market_summary}\n\
             \nProvide a single swap recommendation as JSON with two fields:\n1. 'action':\

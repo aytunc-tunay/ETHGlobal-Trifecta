@@ -52,6 +52,8 @@ class Params(BaseParams):
         self.thegraph_api_key = kwargs.get("thegraph_api_key", None)
         self.openai_api_key = kwargs.get("openai_api_key", None)
 
+        self.llm_selection = kwargs.get("llm_selection", None)
+
         # self.transfer_target_address = self._ensure(
         #     "transfer_target_address", kwargs, str
         # )
@@ -82,3 +84,6 @@ class TheGraphSpecs(ApiSpecs):
 
 class OpenAISpecs(ApiSpecs):
     """A model that wraps ApiSpecs for Coinmarketcap API."""
+
+class NillionSpecs(ApiSpecs):
+    """A model that wraps ApiSpecs for Nillion API."""

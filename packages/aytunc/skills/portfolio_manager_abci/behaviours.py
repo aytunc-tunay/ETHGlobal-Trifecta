@@ -57,6 +57,7 @@ from packages.aytunc.skills.portfolio_manager_abci.models import (
     Params,
     SharedState,
     OpenAISpecs,
+    NillionSpecs,
 )
 
 from packages.aytunc.skills.portfolio_manager_abci.rounds import (
@@ -108,6 +109,11 @@ class PortfolioManagerBaseBehaviour(BaseBehaviour, ABC):
     def openai_specs(self) -> OpenAISpecs:
         """Get the OpenAI api specs."""
         return self.context.openai_specs
+    
+    @property
+    def nillion_specs(self) -> NillionSpecs:
+        """Get the Nillion api specs."""
+        return self.context.nillion_specs
 
     @property
     def coinmarketcap_specs(self) -> CoinMarketCapSpecs:
@@ -414,7 +420,7 @@ class DecisionMakingBehaviour(PortfolioManagerBaseBehaviour):
 
     def get_llm_response(self, prompt: str) -> Generator[None, None, Optional[dict]]:
         """
-        Gets rebalancing recommendation from OpenAI API based on provided prompt.
+        Gets rebalancing recommendation from LLM API based on provided prompt.
         
         Args:
             prompt (str): The prompt to send to the LLM
@@ -422,9 +428,16 @@ class DecisionMakingBehaviour(PortfolioManagerBaseBehaviour):
         Returns:
             Optional[dict]: Parsed JSON response containing rebalancing decision, or None if request fails
         """
-        # Get API specifications
-        specs = self.openai_specs.get_spec()
-        
+        # Get LLM selection, default to OpenAI if not specified
+        llm_selection = self.params.llm_selection or "openai"
+        self.context.logger.info(f"Using LLM: {llm_selection}")
+
+        # Get API specifications based on LLM selection
+        if llm_selection == "nillion":
+            specs = self.nillion_specs.get_spec()
+        else:
+            specs = self.openai_specs.get_spec()
+
         # Update prompt in message parameters
         specs['parameters']['messages'][1]['content'] = prompt
 
@@ -439,16 +452,33 @@ class DecisionMakingBehaviour(PortfolioManagerBaseBehaviour):
             headers=specs['headers']
         )
 
+        if raw_response is None:
+            self.context.logger.error(f"No response received from {llm_selection} API")
+            return None
+
         try:
-            # Parse response and extract decision
-            response_data = json.loads(raw_response.body)
+            # Parse response based on LLM selection
+            if llm_selection == "nillion":
+                response_data = json.loads(raw_response.body.decode('utf-8'))
+            else:
+                response_data = json.loads(raw_response.body)
+
             response_text = response_data.get('choices', [])[0].get('message', {}).get('content', '').strip()
             
             # Handle markdown code blocks if present
             if '```json' in response_text:
                 json_str = response_text.split('```json\n')[1].split('\n```')[0]
             else:
-                json_str = response_text
+                # For Nillion responses, extract JSON part
+                if llm_selection == "nillion":
+                    start_idx = response_text.find('{')
+                    end_idx = response_text.rfind('}') + 1
+                    if start_idx == -1 or end_idx == 0:
+                        self.context.logger.error("Could not find JSON object in response")
+                        return None
+                    json_str = response_text[start_idx:end_idx]
+                else:
+                    json_str = response_text
                 
             # Parse final decision
             decision_dict = json.loads(json_str)
@@ -457,7 +487,7 @@ class DecisionMakingBehaviour(PortfolioManagerBaseBehaviour):
             return decision_dict
             
         except (json.JSONDecodeError, IndexError, KeyError) as e:
-            self.context.logger.error(f"Error parsing OpenAI response: {e}")
+            self.context.logger.error(f"Error parsing {llm_selection} response: {e}")
             return None
 
     def get_next_event(self) -> Generator[None, None, Optional[Tuple[str,Dict[str, float], str]]]:

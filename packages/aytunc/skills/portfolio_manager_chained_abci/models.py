@@ -11,8 +11,8 @@ from packages.valory.skills.abstract_round_abci.tests.data.dummy_abci.models imp
 from packages.aytunc.skills.portfolio_manager_abci.models import (
     TheGraphSpecs as BaseTheGraphSpecs,
     CoinMarketCapSpecs as BaseCoinMarketCapSpecs,
-    OpenAISpecs as BaseOpenAISpecs
-
+    OpenAISpecs as BaseOpenAISpecs,
+    NillionSpecs as BaseNillionSpecs,
 
 )
 from packages.aytunc.skills.portfolio_manager_abci.models import Params as PortfolioManagerParams
@@ -72,3 +72,6 @@ class TheGraphSpecs(BaseTheGraphSpecs):
 
 class OpenAISpecs(BaseOpenAISpecs):
     """A model that wraps ApiSpecs for OpenAI API."""   
+
+class NillionSpecs(BaseNillionSpecs):
+    """A model that wraps ApiSpecs for Nillion API."""
